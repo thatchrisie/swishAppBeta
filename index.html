@@ -1,0 +1,54 @@
+ <!DOCTYPE html>
+ <html>
+
+   <body>
+
+
+     <img id="imageScanner" style="display: none;" src="" alt="qr-code-scanner-online">
+     <input onchange="readInput(this)" class="file-input" id="file-selector" type="file"> 
+     <textarea class="form-control" id="file-qr-result" rows="11" data-gramm="false" wt-ignore-input="true" pwa2-uuid="EDITOR-88F-EA4-33E04-E77" pwa-fake-editor="" spellcheck="false" style="position: relative !important; z-index: auto !important;" data-quillbot-element="gXBLRPCA1K7F0lG4lkyZp">Result will be here. </textarea>
+
+
+
+   </body>
+
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+   <script src="qcode-decoder.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/pandasuite-bridge@4.2.3/lib/pandasuite-bridge.min.js"></script>
+
+   <script>
+     /* this new QR code scanner code */
+     function readInput(input) {
+       console.log(input.files)
+       if (input.files && input.files[0]) {
+         var reader = new FileReader();
+         reader.onload = function(e) {
+           $('#imageScanner').attr('src', e.target.result)
+		   readQrCode();
+         };
+         reader.readAsDataURL(input.files[0]);
+       }
+     }
+	 function readSRC(url) {
+        $('#imageScanner').attr('src', url)
+		readQrCode();
+     }
+	 
+     var qr = new QCodeDecoder();
+     var img = document.querySelector('img#imageScanner');
+
+     function readQrCode() {
+       console.log(qr.decodeFromImage, img)
+       qr.decodeFromImage(img, function(err, result) {
+         console.log(12)
+         if (err) {
+           document.getElementById('qr-video').click();
+         } else {
+           $('#file-qr-result').val(result);
+         }
+       });
+     }
+
+   </script>
+
+ </html>
